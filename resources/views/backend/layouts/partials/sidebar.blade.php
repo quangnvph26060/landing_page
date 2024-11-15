@@ -52,7 +52,39 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{route('admin.configuration.index')}}" class="nav-link"
-                                    data-key="t-website">Cấu Hình Trang Web</a>
+                                    data-key="t-website">Cấu Hình Chung</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#sidebarSignIn" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSignIn" data-key="t-signin"> Cấu Hình Trang Chủ
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarSignIn">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 1)}}" class="nav-link" data-key="t-signin"> Session 1
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 2)}}" class="nav-link" data-key="t-signin"> Session 2
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 3)}}" class="nav-link" data-key="t-signin"> Session 3
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 4)}}" class="nav-link" data-key="t-signin"> Session 4
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 5)}}" class="nav-link" data-key="t-signin"> Session 5
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 6)}}" class="nav-link" data-key="t-signin"> Session 6
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                         </ul>
                     </div>

@@ -6,14 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fixed Header Example</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/style.css')}}" />
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/swiper/swiper-bundle.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/swiper/swiper-bundle.min.css') }}" />
 
 
-    <link rel="shortcut icon" type="image/x-icon" href="{{showImage($config->favicon)}}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ showImage($config->favicon) }}" />
+
+    {!! $config->script !!}
+
 </head>
 
 <body style="margin-top: 56px">
+
     <!-- Adjust margin-top to prevent content overlap -->
 
     <!-- Header -->
@@ -23,7 +27,7 @@
             <div class="logo">TRANG CHỦ</div>
 
             <!-- Hotline -->
-            <div class="hotline">Hotline: {{$config->phone}}</div>
+            <div class="hotline">Hotline: {{ $config->phone }}</div>
 
             <!-- Menu icon (hamburger) -->
             <div class="menu-icon">
@@ -35,8 +39,7 @@
 
     <!-- Content -->
     <div class="banner">
-        <img src="https://vending-cdn.kootoro.com/torov-cms/upload/image/1669358914523-kh%C3%A1i%20ni%E1%BB%87m%20qu%E1%BA%A3ng%20c%C3%A1o%20banner%20tr%C3%AAn%20website.jpg"
-            class="img-fluid" alt="..." />
+        <img src="{{ showImage($data['session_1']->banners) }}" class="img-fluid" alt="..." />
     </div>
 
     <!-- Form -->
@@ -51,7 +54,7 @@
     <!-- Form -->
 
     <div class="banner-text">
-        GIẢI PHÁP CHO VẤN ĐỀ DA LIỄU VIÊM DA, VẨY NẾN, HẮC LÀO, NGỨA.....
+        {{ $data['session_2']->title }}
     </div>
 
     <div class="w-75 mx-auto">
@@ -59,66 +62,75 @@
     </div>
 
     <div class="product-info text-center">
-        <p>THÀNH PHẦN TỪ DƯỢC LIỆU, SẢN XUẤT ĐẠT CHUẨN GMP</p>
-        <div class="hr"></div>
-        <p>ĐÃ ĐƯỢC BỘ Y TẾ KIỂM ĐỊNH & CẤP PHÉP LƯU HÀNH TRÊN TOÀN QUỐC</p>
-        <div class="hr"></div>
-        <p>KHÔNG CORTICOID - AN TOÀN CHO DA - LÀNH TÍNH</p>
+
+        @if (count($data['session_2']->contents) > 0)
+            @foreach ($data['session_2']->contents as $content)
+                <p>{{ $content }}</p>
+                @if (!$loop->last)
+                    <div class="hr"></div>
+                @endif
+            @endforeach
+        @endif
+
+
     </div>
 
     <div class="uses mx-3 mt-2">
         <h3 class="fw-bold" style="color: #8e24aa">Công Dụng :</h3>
-        <div class="d-flex mb-2">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
+
+        @foreach ($data['session_3']->contents as $content)
+            <div class="d-flex mb-2">
+                <div class="check">
+                    <img style="width: 30px" src="{{ asset('frontend/assets/image/check.png') }}" alt="" />
+                </div>
+                <div class="content ps-0 mt-1">
+                    <span>
+                        {{ $content }}
+                    </span>
+                </div>
             </div>
-            <div class="content ps-0 mt-1">
-                <span>
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
-        <div class="d-flex">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
-            </div>
-            <div class="content ps-0 mt-1">
-                <span>
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
+        @endforeach
     </div>
 
-    <div class="position-relative"
-        style="
-        background-color: rgb(243, 238, 237);
-        width: 100%;
-        height: 430px;
+    <div style=" background-color: rgb(243, 238, 237);
+        width: 100%;" class="py-3">
+        <div class="d-flex justify-content-center" style="
         margin-top: 20px;
       ">
-        <div class="text-center p-3 d-flex justify-content-center align-items-center position-absolute"
-            style="
+            <div class="text-center p-3 d-flex justify-content-center align-items-center "
+                style="
           border: 1px solid #8e24aa;
           width: 75%;
           height: 75%;
           border-radius: 50%;
           overflow: hidden;
-          left: 30%;
-          top: 50%;
-          transform: translate(-50%, -50%);
           background-color: #ffffff;
         ">
-            <img class="img-fluid" style="width: 90%; height: auto" src="{{asset('frontend/assets/image/Group 2.jpg')}}" alt="" />
+                <img class="img-fluid" style="width: 90%; height: auto" src="{{ showImage($data['session_3']->image) }}"
+                    alt="" />
+            </div>
+
+
         </div>
+        <div class="ms-3">
+            <p class="fw-bold">Thành phần:</p>
+            <span class="component-list">
+                @foreach (explode(',', $data['session_3']->ingredients) as $ingredient)
+                    <span>{{ $ingredient }}</span>
+                    @if (!$loop->last)
+                        <span>, </span>
+                    @endif
+                @endforeach
+            </span>
+        </div>
+
+
     </div>
 
-    <div class="banner-text">ĐỐI TƯỢNG SỬ DỤNG</div>
+    <div class="banner-text">{{ $data['session_4']->title }}</div>
 
     <div class="text-center" style="margin-bottom: -34px">
-        <img style="width: 90% !important" src="{{asset('frontend/assets/image/_dsc1200-20220718072408.png')}}" alt="" />
+        <img style="width: 90% !important" src="{{ showImage($data['session_4']->image) }}" alt="" />
     </div>
 
     <div class="p-3"
@@ -129,238 +141,160 @@
         border-right: 8px solid #a7a0a0;
         border-bottom: 8px solid #a7a0a0;
       ">
-        <div class="d-flex">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
+
+        @foreach ($data['session_4']->contents as $c4)
+            <div class="d-flex">
+                <div class="check">
+                    <img style="width: 30px" src="{{ asset('frontend/assets/image/check.png') }}" alt="" />
+                </div>
+                <div class="content ps-0 mt-2">
+                    {!! $c4 !!}
+                </div>
             </div>
-            <div class="content ps-0 mt-2">
-                <span>
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
-        <div class="d-flex">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
-            </div>
-            <div class="content ps-0 mt-2">
-                <span>
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
-        <div class="d-flex">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
-            </div>
-            <div class="content ps-0 mt-2">
-                <span>
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
+        @endforeach
     </div>
 
     <div style="background-color: #f4f3fd" class="p-3 mt-3">
-        <div class="d-flex p-2 mb-2" style="background-color: #8e24aa; border-radius: 15px">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
+        @foreach ($data['session_4']->product_benefits as $p4)
+            <div class="d-flex p-2 mb-2" style="background-color: #8e24aa; border-radius: 15px">
+                <div class="check">
+                    <img style="width: 30px" src="{{ asset('frontend/assets/image/check.png') }}" alt="" />
+                </div>
+                <div class="content ps-0 ">
+
+                    {!! $p4 !!}
+                </div>
             </div>
-            <div class="content ps-0 mt-2">
-                <span class="fw-bold text-white">
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
-        <div class="d-flex p-2 mb-2" style="background-color: #8e24aa; border-radius: 15px">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
-            </div>
-            <div class="content ps-0 mt-2">
-                <span class="fw-bold text-white">
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
+        @endforeach
+
     </div>
 
     <div style="background-color: #e0eaee" class="p-2">
         <h3 class="fw-bold text-center fs-4" style="color: #8e24aa">
             BẠN ĐANG GẶP PHẢI CÁC VẤN ĐỀ
         </h3>
+
         <div style="border-top: 1px solid #8e24aa; width: 90%; margin: auto"></div>
-
-        <div
-            style="
+        @foreach ($data['session_5'] as $s5)
+            <div
+                style="
           border-radius: 27px;
           background-image: linear-gradient(
             rgba(21, 110, 213, 0.9),
             rgb(148, 26, 158)
           );
-        ">
-            <div class="d-flex py-4 mt-3">
-                <div class="image" style="width: 55%; padding: 0 5px 0 10px">
-                    <img style="width: 100%; height: auto" src="{{asset('frontend/assets/image/capture-20230330075742-kkijj.jpg')}}"
-                        alt="" />
-                </div>
-                <div class="content">
-                    <div class="title">
-                        <p class="fw-bold fs-4 pb-1" style="color: #fefe01; border-bottom: 3px solid #ffffff">
-                            VIÊM DA CƠ ĐỊA
-                        </p>
+            ">
+                <div class="d-flex py-4 mt-3">
+                    <div class="image" style="width: 55%; padding: 0 5px 0 10px">
+                        <img style="width: 100%; height: auto" src="{{ showImage($s5->image) }}" alt="" />
                     </div>
-                    <div class="text-white" style="font-weight: 500">
-                        <p>Da đỏ và khô</p>
-                        <p>Da đỏ và khô</p>
-                        <p>Da đỏ và khô</p>
+                    <div class="content">
+                        <div class="title">
+                            <p class="fw-bold fs-4 pb-1" style="color: #fefe01; border-bottom: 3px solid #ffffff">
+                                {{ $s5->title }}
+                            </p>
+                        </div>
+                        <div class="text-white" style="font-weight: 400">
+                            @php
+                                $arr = explode('| ', $s5->contents);
+                            @endphp
+
+                            @foreach ($arr as $i5)
+                                <p class="">{{ $i5 }} </p>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-contact d-flex mt-3 justify-content-between px-2">
-            <input type="text"
-                style="
-            padding: 15px 60px 15px 5px;
-            border: 3px solid #040b7a;
-            border-radius: 10px;
-          "
-                placeholder="Số điện thoại" />
-            <button
-                style="
-            padding: 15px 10px;
-            border: 3px solid #040b7a;
-            border-radius: 10px;
-            background-color: #040b7b;
-            color: white;
-            font-weight: bold;
-          ">
-                đăng ký ngay
-            </button>
-        </div>
-
-        <div
-            style="
-          border-radius: 27px;
-          background-image: linear-gradient(
-            rgba(21, 110, 213, 0.9),
-            rgb(148, 26, 158)
-          );
-        ">
-            <div class="d-flex py-4 mt-3">
-                <div class="image" style="width: 55%; padding: 0 5px 0 10px">
-                    <img style="width: 100%; height: auto" src="{{asset('frontend/assets/image/capture-20230330075742-kkijj.jpg')}}"
-                        alt="" />
+            <form action="" method="post">
+                <div class="form-contact d-flex mt-3 justify-content-between px-2">
+                    <input type="text"
+                        style="
+                padding: 15px 60px 15px 5px;
+                border: 3px solid #040b7a;
+                border-radius: 10px;
+              "
+                        placeholder="Số điện thoại" />
+                    <button
+                        style="
+                padding: 15px 10px;
+                border: 3px solid #040b7a;
+                border-radius: 10px;
+                background-color: #040b7b;
+                color: white;
+                font-weight: bold;
+              ">
+                        đăng ký ngay
+                    </button>
                 </div>
-                <div class="content">
-                    <div class="title">
-                        <p class="fw-bold fs-4 pb-1" style="color: #fefe01; border-bottom: 3px solid #ffffff">
-                            VIÊM DA CƠ ĐỊA
-                        </p>
-                    </div>
-                    <div class="text-white" style="font-weight: 500">
-                        <p>Da đỏ và khô</p>
-                        <p>Da đỏ và khô</p>
-                        <p>Da đỏ và khô</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </form>
+        @endforeach
 
-        <div class="form-contact d-flex mt-3 justify-content-between px-2">
-            <input type="text"
-                style="
-            padding: 15px 60px 15px 5px;
-            border: 3px solid #040b7a;
-            border-radius: 10px;
-          "
-                placeholder="Số điện thoại" />
-            <button
-                style="
-            padding: 15px 10px;
-            border: 3px solid #040b7a;
-            border-radius: 10px;
-            background-color: #040b7b;
-            color: white;
-            font-weight: bold;
-          ">
-                đăng ký ngay
-            </button>
-        </div>
+
+
     </div>
 
     <div>
         <div class="logo text-center my-3 position-relative">
             <img class="position-absolute w-50" style="left: 10px"
-                src="{{asset('frontend/assets/image/lovepik-falling-leaves-png-image_401334673_wh1200-20220718075641.png')}}"
+                src="{{ asset('frontend/assets/image/lovepik-falling-leaves-png-image_401334673_wh1200-20220718075641.png') }}"
                 alt="" />
             <img style="width: 35%"
-                src="{{asset('frontend/assets/image/9d8ed5_651b6cb038ff4917bcdbe0c58ca2c241_mv2-20220718075842.png')}}" alt="" />
+                src="{{ asset('frontend/assets/image/9d8ed5_651b6cb038ff4917bcdbe0c58ca2c241_mv2-20220718075842.png') }}"
+                alt="" />
         </div>
 
         <div class="text-center px-2">
-            <h3 class="fw-bold fs-1" style="color: #e47d04">
-                SẢN PHẨM ĐƯỢC BỘ Y TẾ
+            <h3 class="fw-bold fs-2" style="color: #e47d04">
+                {{ $data['session_6']->title }}
             </h3>
             <p class="fw-bold" style="color: #74267b">
-                CẤP PHÉP LƯU HÀNH TOÀN QUỐC VÀ ĐẢM BẢO CHẤT LƯỢNG
+                {{ $data['session_6']->short_description }}
             </p>
         </div>
     </div>
 
     <div class="p-2">
-        <div class="d-flex mb-2">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
+
+        @foreach ($data['session_6']->contents as $s6)
+            <div class="d-flex mb-2">
+                <div class="check">
+                    <img style="width: 30px" src="{{ asset('frontend/assets/image/check.png') }}" alt="" />
+                </div>
+                <div class="content ps-0 mt-1 " style="font-weight: 500">
+                   {{ $s6 }}
+                </div>
             </div>
-            <div class="content ps-0 mt-1">
-                <span>
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
-        <div class="d-flex mb-2">
-            <div class="check">
-                <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
-            </div>
-            <div class="content ps-0 mt-1">
-                Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                tình trạng viêm da cơ địa
-                <span>
-                    Giải pháp hỗ trợ cho tình trạng viêm da cơ địa,Giải pháp hỗ trợ cho
-                    tình trạng viêm da cơ địa
-                </span>
-            </div>
-        </div>
+        @endforeach
     </div>
 
     <!-- 111 -->
     <!-- <div class="mt-2">
-      <img class="img-fluid" src="{{asset('frontend/assets/image/3-20220711074704.jpg')}}" alt="" />
+      <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}" alt="" />
     </div> -->
 
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <img class="img-fluid" src="{{asset('frontend/assets/image/3-20220711074704.jpg')}}" alt="Image 1" />
+                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
+                    alt="Image 1" />
             </div>
             <div class="swiper-slide">
-                <img class="img-fluid" src="{{asset('frontend/assets/image/3-20220711074704.jpg')}}" alt="Image 2" />
+                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
+                    alt="Image 2" />
             </div>
             <div class="swiper-slide">
-                <img class="img-fluid" src="{{asset('frontend/assets/image/3-20220711074704.jpg')}}" alt="Image 3" />
+                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
+                    alt="Image 3" />
             </div>
             <div class="swiper-slide">
-                <img class="img-fluid" src="{{asset('frontend/assets/image/3-20220711074704.jpg')}}" alt="Image 4" />
+                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
+                    alt="Image 4" />
             </div>
             <div class="swiper-slide">
-                <img class="img-fluid" src="{{asset('frontend/assets/image/3-20220711074704.jpg')}}" alt="Image 5" />
+                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
+                    alt="Image 5" />
             </div>
         </div>
     </div>
@@ -432,7 +366,7 @@
 
         <div class="px-3 py-2" style="background-color: #e0cdf4">
             <img class="img-fluid"
-                src="{{asset('frontend/assets/image/279073191_398487491867279_3954641521490708664_n-20220718141317.jpg')}}"
+                src="{{ asset('frontend/assets/image/279073191_398487491867279_3954641521490708664_n-20220718141317.jpg') }}"
                 alt="" />
         </div>
     </div>
@@ -481,7 +415,7 @@
             <div class="hot-line d-flex gap-2 align-items-center mb-4">
                 <i class="fa-solid fa-phone fa-2xl me-2" style="color: #ffffff"></i>
                 <p class="fw-bold m-0 text-white">
-                 Hotline:  {{ $config->phone }}
+                    Hotline: {{ $config->phone }}
                 </p>
             </div>
             <div class="website d-flex gap-2 align-items-center mb-4">
@@ -497,7 +431,7 @@
         <div class="footer-bottom position-relative mb-4">
             <div class="py-2 ps-5 pe-3 ms-5 me-4" style="border: 1px solid #ffffff">
                 <p class="m-0 text-white">
-                  {!! $config->content_footer !!}
+                    {!! $config->content_footer !!}
                 </p>
             </div>
 
@@ -528,23 +462,23 @@
     </div>
 
     <div class="contact-icons">
-        <a target="_blank" href="tel:{{$config->phone}}" class="icon phone" title="Call">
-            <img src="{{asset('frontend/assets/image/logo-phone.png')}}" alt="" />
+        <a target="_blank" href="tel:{{ $config->phone }}" class="icon phone" title="Call">
+            <img src="{{ asset('frontend/assets/image/logo-phone.png') }}" alt="" />
         </a>
-        <a target="_blank" href="https://zalo.me/{{$config->phone}}" class="icon zalo" title="Zalo">
-            <img src="{{asset('frontend/assets/image/Logo-zalo.png')}}" alt="" />
+        <a target="_blank" href="https://zalo.me/{{ $config->phone }}" class="icon zalo" title="Zalo">
+            <img src="{{ asset('frontend/assets/image/Logo-zalo.png') }}" alt="" />
         </a>
-        <a target="_blank" href="{{$config->fanpage}}" class="icon messages" title="Messages">
-            <img src="{{asset('frontend/assets/image/logo-mess.png')}}" alt="" />
+        <a target="_blank" href="{{ $config->fanpage }}" class="icon messages" title="Messages">
+            <img src="{{ asset('frontend/assets/image/logo-mess.png') }}" alt="" />
         </a>
     </div>
 
     <div class="scroll-top" onclick="scrollToTop()">▲</div>
 
     <!-- Bootstrap JS (Optional) -->
-    <script src="{{asset('frontend/assets/js/all.min.js')}}"></script>
-    <script src="{{asset('frontend/assets/js/dist/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{asset('frontend/assets/js/swiper/swiper-bundle.min.js')}}"></script>
+    <script src="{{ asset('frontend/assets/js/all.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/dist/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/swiper/swiper-bundle.min.js') }}"></script>
 
     <script>
         const swiper = new Swiper(".swiper-container", {

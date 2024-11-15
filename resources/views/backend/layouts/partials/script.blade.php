@@ -46,7 +46,13 @@
         }
     })
 
-    window.ckeditor = (selector, height = 300) => {
+    window.ckeditor = function(selector, height = 300) {
+        // Kiểm tra nếu CKEditor đã tồn tại cho selector
+        if (CKEDITOR.instances[selector]) {
+            CKEDITOR.instances[selector].destroy(true); // Hủy CKEditor cũ
+        }
+
+        // Khởi tạo CKEditor mới
         CKEDITOR.replace(selector, {
             height: height,
             toolbar: [{
@@ -71,16 +77,14 @@
                 {
                     name: 'basicstyles',
                     items: ['Bold', 'Italic', 'Underline', '-', 'Subscript', 'Superscript', '-',
-                        'Strike',
-                        'RemoveFormat'
+                        'Strike', 'RemoveFormat'
                     ]
                 },
                 {
                     name: 'paragraph',
                     items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
                         'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
-                        'JustifyBlock',
-                        '-', 'BidiLtr', 'BidiRtl', 'Language'
+                        'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
                     ]
                 },
                 {
@@ -90,8 +94,7 @@
                 {
                     name: 'insert',
                     items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar',
-                        'PageBreak',
-                        'Iframe'
+                        'PageBreak', 'Iframe'
                     ]
                 },
                 '/',
@@ -115,7 +118,13 @@
             extraPlugins: 'font,colorbutton,justify',
             fontSize_sizes: '11px;12px;13px;14px;15px;16px;18px;20px;22px;24px;26px;28px;30px;32px;34px;36px',
         });
-    }
+    };
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    })
 </script>
 
 @stack('scripts')
