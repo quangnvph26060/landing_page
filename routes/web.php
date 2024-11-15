@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Backend\AuthController;
-use App\Http\Controllers\Backend\Config\ConfigController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\AuthController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\Config\ConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,7 @@ use App\Http\Controllers\Backend\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.layouts.master');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 route::prefix('admin')->name('admin.')->group(function () {
@@ -28,9 +27,19 @@ route::prefix('admin')->name('admin.')->group(function () {
         route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
         // start Configuration
-        route::prefix('configuration')->name('configuration.')->group(function () {
-            route::get('/', [ConfigController::class, 'index'])->name('index');
-            route::post('/', [ConfigController::class, 'store'])->name('store');
+
+        route::prefix('configuration')->name('configuration.')->controller(ConfigController::class)->group(function () {
+
+            route::get('/', 'index')->name('index');
+            route::post('/', 'store')->name('store');
+
+
+            route::get("session/{value}", 'configHome')->name("session");
+
+            route::post("session/{value}", 'postSession')->name("postSession");
+
+            route::post('session/{id}/update', 'update')->name('update');
+            route::delete('session/{id}', 'destroy')->name('destroy');
         });
     });
 
