@@ -8,6 +8,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('frontend/assets/css/style.css')}}" />
     <link rel="stylesheet" href="{{asset('frontend/assets/css/swiper/swiper-bundle.min.css')}}" />
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{showImage($config->favicon)}}" />
 </head>
 
 <body style="margin-top: 56px">
@@ -20,7 +23,7 @@
             <div class="logo">TRANG CHỦ</div>
 
             <!-- Hotline -->
-            <div class="hotline">Hotline: 0362904765</div>
+            <div class="hotline">Hotline: {{$config->phone}}</div>
 
             <!-- Menu icon (hamburger) -->
             <div class="menu-icon">
@@ -64,7 +67,7 @@
     </div>
 
     <div class="uses mx-3 mt-2">
-        <h3 class="ms-4 fw-bold" style="color: #8e24aa">Công Dụng :</h3>
+        <h3 class="fw-bold" style="color: #8e24aa">Công Dụng :</h3>
         <div class="d-flex mb-2">
             <div class="check">
                 <img style="width: 30px" src="{{asset('frontend/assets/image/check.png')}}" alt="" />
@@ -223,7 +226,7 @@
         <div class="form-contact d-flex mt-3 justify-content-between px-2">
             <input type="text"
                 style="
-            padding: 15px 60px 15px 0;
+            padding: 15px 60px 15px 5px;
             border: 3px solid #040b7a;
             border-radius: 10px;
           "
@@ -272,7 +275,7 @@
         <div class="form-contact d-flex mt-3 justify-content-between px-2">
             <input type="text"
                 style="
-            padding: 15px 60px 15px 0;
+            padding: 15px 60px 15px 5px;
             border: 3px solid #040b7a;
             border-radius: 10px;
           "
@@ -368,7 +371,7 @@
         </h3>
 
         <div class="video mt-3">
-            <iframe width="100%" height="315" src="https://www.youtube.com/embed/hjxLhmmUk2M?si=FgylQJhkA8EkblqY"
+            <iframe width="100%" height="245" src="https://www.youtube.com/embed/hjxLhmmUk2M?si=FgylQJhkA8EkblqY"
                 title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -460,11 +463,10 @@
     <footer style="background-color: #74267b; padding-bottom: 60px">
         <div class="footer-top mb-3 d-flex align-items-center">
             <div class="logo" style="width: 35%">
-                <img class="img-fluid" src="{{asset('frontend/assets/image/logo-damos-1-1-20220426073706.png')}}" alt="" />
+                <img class="img-fluid" src="{{ showImage($config->logo) }}" alt="" />
             </div>
-
             <div class="text text-center" style="width: 65%">
-                <h3 class="fw-bold fs-4" style="color: #f3f37d">DAMOS CHÍNH HÃNG</h3>
+                <h3 class="fw-bold fs-4" style="color: #f3f37d">{{ $config->title_footer }}</h3>
                 <div class="w-75 mx-auto" style="border: 1px solid #ffffff"></div>
             </div>
         </div>
@@ -473,19 +475,19 @@
             <div class="address d-flex gap-2 align-items-center mb-4">
                 <i class="fa-solid fa-address-book fa-2xl me-2" style="color: #ffffff"></i>
                 <p class="fw-bold m-0 text-white">
-                    Địa chỉ: Số 14 Ngõ 28 Trần Điền, Định Công, Thanh Xuân, Hà Nội
+                    Địa chỉ: {{ $config->address }}
                 </p>
             </div>
             <div class="hot-line d-flex gap-2 align-items-center mb-4">
                 <i class="fa-solid fa-phone fa-2xl me-2" style="color: #ffffff"></i>
                 <p class="fw-bold m-0 text-white">
-                    Địa chỉ: Số 14 Ngõ 28 Trần Điền, Định Công, Thanh Xuân, Hà Nội
+                 Hotline:  {{ $config->phone }}
                 </p>
             </div>
             <div class="website d-flex gap-2 align-items-center mb-4">
                 <i class="fa-solid fa-globe fa-2xl me-2" style="color: #ffffff"></i>
                 <p class="fw-bold m-0 text-white">
-                    Địa chỉ: Số 14 Ngõ 28 Trần Điền, Định Công, Thanh Xuân, Hà Nội
+                    Website: <a target="_blank" href="{{ $config->website }}">{{ $config->website }}</a>
                 </p>
             </div>
         </div>
@@ -495,8 +497,7 @@
         <div class="footer-bottom position-relative mb-4">
             <div class="py-2 ps-5 pe-3 ms-5 me-4" style="border: 1px solid #ffffff">
                 <p class="m-0 text-white">
-                    Theo dõi Fan-page chính thứcDAMOS CHÍNH HÃNGđể cập nhật các thông
-                    tin mới nhất của sản phẩm và chính sách ưu đãi, giá bán
+                  {!! $config->content_footer !!}
                 </p>
             </div>
 
@@ -527,13 +528,13 @@
     </div>
 
     <div class="contact-icons">
-        <a href="tel:+123456789" class="icon phone" title="Call">
+        <a target="_blank" href="tel:{{$config->phone}}" class="icon phone" title="Call">
             <img src="{{asset('frontend/assets/image/logo-phone.png')}}" alt="" />
         </a>
-        <a href="https://zalo.me/0964305701" class="icon zalo" title="Zalo">
+        <a target="_blank" href="https://zalo.me/{{$config->phone}}" class="icon zalo" title="Zalo">
             <img src="{{asset('frontend/assets/image/Logo-zalo.png')}}" alt="" />
         </a>
-        <a href="sms:+123456789" class="icon messages" title="Messages">
+        <a target="_blank" href="{{$config->fanpage}}" class="icon messages" title="Messages">
             <img src="{{asset('frontend/assets/image/logo-mess.png')}}" alt="" />
         </a>
     </div>
