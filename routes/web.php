@@ -40,6 +40,10 @@ route::prefix('admin')->name('admin.')->group(function () {
 
             route::post('session/{id}/update', 'update')->name('update');
             route::delete('session/{id}', 'destroy')->name('destroy');
+
+            route::delete('session/{id}/image', 'deleteImage')->name('image.destroy');
+
+         
         });
     });
 

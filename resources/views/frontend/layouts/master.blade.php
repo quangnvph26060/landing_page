@@ -27,7 +27,9 @@
             <div class="logo">TRANG CHỦ</div>
 
             <!-- Hotline -->
-            <div class="hotline">Hotline: {{ $config->phone }}</div>
+            <a style="color: #ffffff; text-decoration: none" target="_blank" href="tel:{{ $config->phone }}">
+                <div class="hotline">Hotline: {{ $config->phone }}</div>
+            </a>
 
             <!-- Menu icon (hamburger) -->
             <div class="menu-icon">
@@ -106,8 +108,8 @@
           overflow: hidden;
           background-color: #ffffff;
         ">
-                <img class="img-fluid" style="width: 90%; height: auto" src="{{ showImage($data['session_3']->image) }}"
-                    alt="" />
+                <img class="img-fluid" style="width: 90%; height: auto"
+                    src="{{ showImage($data['session_3']->image) }}" alt="" />
             </div>
 
 
@@ -263,62 +265,43 @@
                     <img style="width: 30px" src="{{ asset('frontend/assets/image/check.png') }}" alt="" />
                 </div>
                 <div class="content ps-0 mt-1 " style="font-weight: 500">
-                   {{ $s6 }}
+                    {{ $s6 }}
                 </div>
             </div>
         @endforeach
     </div>
 
-    <!-- 111 -->
-    <!-- <div class="mt-2">
-      <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}" alt="" />
-    </div> -->
-
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
-                    alt="Image 1" />
-            </div>
-            <div class="swiper-slide">
-                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
-                    alt="Image 2" />
-            </div>
-            <div class="swiper-slide">
-                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
-                    alt="Image 3" />
-            </div>
-            <div class="swiper-slide">
-                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
-                    alt="Image 4" />
-            </div>
-            <div class="swiper-slide">
-                <img class="img-fluid" src="{{ asset('frontend/assets/image/3-20220711074704.jpg') }}"
-                    alt="Image 5" />
-            </div>
+
+            @foreach ($data['session_7'] as $s7)
+                <div class="swiper-slide">
+                    <img class="img-fluid" src="{{ showImage($s7->image) }}" alt="Image {{ $s7->id }}" />
+                </div>
+            @endforeach
         </div>
     </div>
 
-    <div class="mt-4">
-        <h3 class="fw-bold text-center fs-4" style="color: #8e24aa">
-            DIỄN VIÊN DOÃN QUỐC ĐAM
-        </h3>
+    @foreach ($data['session_8'] as $s8)
+        <div class="mt-4">
+            <h3 class="fw-bold text-center fs-4" style="color: #8e24aa">
+                {{ $s8->title }}
+            </h3>
 
-        <div class="video mt-3">
-            <iframe width="100%" height="245" src="https://www.youtube.com/embed/hjxLhmmUk2M?si=FgylQJhkA8EkblqY"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+            <div class="video mt-3">
+                <iframe width="100%" height="245"
+                    src="https://www.youtube.com/embed/{{ getYouTubeVideoId($s8->link_video) }}"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
 
-        <div class="p-2">
-            <p>
-                Diễn viên Doãn Quốc Đam - "Mến Trọc" (Phim Phố trong làng) chia sẻ cảm
-                nhận về bộ sản phẩm "DAMOS" đã giúp anh thoát chứng mề đay ngứa ngáy,
-                vảy nến toàn thân
-            </p>
+            <div class="p-2">
+                {!! $s8->content !!}
+            </div>
         </div>
-    </div>
+    @endforeach
+
 
     <div style="background-color: #f5f4f4" class="mt-3 py-3 text-center">
         <h3 class="fw-bold mb-2" style="color: #e47d04">
@@ -329,51 +312,45 @@
         <div style="border: 1px solid #a7a0a0" class="w-75 mx-auto"></div>
 
         <div class="list-video mt-3 mx-3">
-            <div class="item">
-                <div style="border: 8px outset #ffffff">
-                    <iframe width="100%" height="215"
-                        src="https://www.youtube.com/embed/jUL5V10hELI?si=loI9TWI7rUsp_fgG"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+            @foreach ($data['session_9'] as $s9)
+                <div class="item">
+                    <div style="border: 8px outset #ffffff">
+                        <iframe width="100%" height="215"
+                            src="https://www.youtube.com/embed/{{ getYouTubeVideoId($s9->link) }}"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: left" class="my-3">
+
+                        {!! $s9->content !!}
+
+
+                    </div>
                 </div>
-                <p style="text-align: left" class="mt-3">
-                    Chú Tô Hiển Binh viêm da cơ địa đã sử dụng bộ sản phẩm Damos và chia
-                    sẻ lại quá trình áp dụng Cách khắc phục của trung tâm
-                </p>
-            </div>
-            <div class="item">
-                <div style="border: 8px outset #ffffff">
-                    <iframe width="100%" height="215"
-                        src="https://www.youtube.com/embed/jUL5V10hELI?si=loI9TWI7rUsp_fgG"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                </div>
-                <p style="text-align: left" class="mt-3">
-                    Chú Tô Hiển Binh viêm da cơ địa đã sử dụng bộ sản phẩm Damos và chia
-                    sẻ lại quá trình áp dụng Cách khắc phục của trung tâm
-                </p>
-            </div>
+            @endforeach
+
         </div>
     </div>
 
     <div class="text-center mt-3">
-        <h3 class="fw-bold" style="color: #e47d04">DAMOS VINH DỰ TOP 10</h3>
+        <h3 class="fw-bold" style="color: #e47d04">{{ $data['session_10']->title }}</h3>
         <p class="fw-bold" style="color: #74267b">
-            THƯƠNG HIỆU DA LIỄU CHÂU Á THÁI BÌNH DƯƠNG
+          {{ $data['session_10']->content }}
         </p>
 
         <div class="px-3 py-2" style="background-color: #e0cdf4">
             <img class="img-fluid"
-                src="{{ asset('frontend/assets/image/279073191_398487491867279_3954641521490708664_n-20220718141317.jpg') }}"
+                src="{{ showImage($data['session_10']->image) }}"
                 alt="" />
         </div>
     </div>
 
     <div style="background-color: #f4f3fd" class="">
         <div class="form-footer m-2 p-3" style="background-color: #540778">
-            <h3 class="fw-bold text-center mb-4" style="color: #ffffff">
+            <h3 class="fw-bold text-center mb-4 fs-4" style="color: #ffffff">
                 Để lại số điện thoại để phòng khám tư vấn ngay
             </h3>
 
