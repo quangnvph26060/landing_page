@@ -113,10 +113,11 @@
                 {
                     name: 'about',
                     items: ['About']
-                }
+                },
             ],
             extraPlugins: 'font,colorbutton,justify',
             fontSize_sizes: '11px;12px;13px;14px;15px;16px;18px;20px;22px;24px;26px;28px;30px;32px;34px;36px',
+            format_tags: 'p;h1;h2;h3;h4;h5;h6;pre;address', 
         });
     };
 

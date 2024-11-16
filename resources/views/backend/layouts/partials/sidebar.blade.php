@@ -83,6 +83,22 @@
                                             <a href="{{route('admin.configuration.session', 6)}}" class="nav-link" data-key="t-signin"> Session 6
                                             </a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 7)}}" class="nav-link" data-key="t-signin"> Session 7
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 8)}}" class="nav-link" data-key="t-signin"> Session 8
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 9)}}" class="nav-link" data-key="t-signin"> Session 9
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.configuration.session', 10)}}" class="nav-link" data-key="t-signin"> Session 10
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>

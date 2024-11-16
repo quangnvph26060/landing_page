@@ -12,10 +12,13 @@ use App\Models\{
     Session_3,
     Session_4,
     Session_5,
-    Session_6
+    Session_6,
+    Session_7,
+    Session_8,
+    Session_9,
+    Session_10
 };
-
-use function Symfony\Component\String\b;
+use Illuminate\Support\Facades\Validator;
 
 class ConfigController extends Controller
 {
@@ -90,6 +93,14 @@ class ConfigController extends Controller
                 return $this->sessionFive();
             case 6:
                 return $this->sessionSix();
+            case 7:
+                return $this->sessionSeven();
+            case 8:
+                return $this->sessionEight();
+            case 9:
+                return $this->sessionNine();
+            case 10:
+                return $this->sessionTen();
             default:
                 abort(404);
         }
@@ -110,6 +121,14 @@ class ConfigController extends Controller
                 return $this->postSessionFive($request);
             case 6:
                 return $this->postSessionSix($request);
+            case 7:
+                return $this->postSessionSeven($request);
+            case 8:
+                return $this->postSessionEight($request);
+            case 9:
+                return $this->postSessionNine($request);
+            case 10:
+                return $this->postSessionTen($request);
             default:
                 abort(404);
         }
@@ -360,6 +379,156 @@ class ConfigController extends Controller
             Session_6::create($criteria);
         } else {
             $session->update($criteria);
+        }
+
+        return redirect()->back()->with('success', 'Cập nhật thành công');
+    }
+
+    public function sessionSeven()
+    {
+        $title = 'Cấu hình session 07';
+        $session = DB::table('sgo_session_7')->get();
+
+        return view('backend.config.home.session-07', compact('title', 'session'));
+    }
+
+    public function postSessionSeven(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 400);
+        }
+
+        DB::beginTransaction();
+        $image = saveImages($request, 'file', 'sliders', 664, 911);
+        try {
+            if ($request->hasFile('file')) {
+                if ($image) {
+                    $imagePath = Session_7::create([
+                        'image' => $image
+                    ]);
+                }
+                DB::commit();
+
+                return response()->json(['message' => 'success', 'image' => showImage($image), 'size' => getSize($image), 'id' => $imagePath->id], 200);
+            }
+        } catch (\Exception $e) {
+            if ($image) {
+
+                deleteImage($image);
+            }
+
+            DB::rollBack();
+
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    function deleteImage($id)
+    {
+        $slider = Session_7::find($id);
+
+        if (!$slider) {
+            return response()->json(['message' => 'Slider not found'], 404);
+        }
+
+        deleteImage($slider->image);
+        $slider->delete();
+
+        return response()->json(['message' => 'success'], 200);
+    }
+
+    public function sessionEight()
+    {
+        $title = 'Cấu hình session 08';
+        $session = Session_8::latest()->get();
+
+        return view('backend.config.home.session-08', compact('title', 'session'));
+    }
+
+    public function postSessionEight(Request $request)
+    {
+        if ($request->type == 'delete') {
+            Session_8::find($request->id)->delete();
+            return response()->json(['status' => true, 'message' => 'Xóa thành công']);
+        }
+
+        $creteria = $request->validate(
+            [
+                'title' => 'required',
+                'link_video' => 'required',
+                'content' => 'required',
+            ],
+        );
+
+        $request->id ?
+            Session_8::find($request->id)->update($creteria)
+            : Session_8::create($creteria);
+
+        return response()->json(['status' => true, 'message' => 'Cập nhật thành công']);
+    }
+
+    public function sessionNine()
+    {
+        $title = 'Cấu hình session 09';
+        $session = Session_9::latest()->get();
+
+        return view('backend.config.home.session-09', compact('title', 'session'));
+    }
+
+    public function postSessionNine(Request $request)
+    {
+        if ($request->type == 'delete') {
+            Session_9::find($request->id)->delete();
+            return response()->json(['status' => true, 'message' => 'Xóa thành công']);
+        }
+
+        $creteria = $request->validate(
+            [
+                'link' => 'required',
+                'content' => 'required',
+            ],
+        );
+
+        $request->id ?
+            Session_9::find($request->id)->update($creteria)
+            : Session_9::create($creteria);
+
+        return response()->json(['status' => true, 'message' => 'Cập nhật thành công']);
+    }
+
+    public function sessionTen()
+    {
+        $title = 'Cấu hình session 10';
+        $session = Session_10::first();
+
+        return view('backend.config.home.session-10', compact('title', 'session'));
+    }
+
+    public function postSessionTen(Request $request)
+    {
+        $creteria = $request->validate(
+            [
+                'title' => 'required',
+                'content' => 'required',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ],
+        );
+
+        if ($request->hasFile('image')) {
+            $image = saveImage($request, 'image', 'image');
+            $creteria['image'] = $image;
+        }
+
+        $session = Session_10::first();
+
+        if (!$session) {
+            Session_10::create($creteria);
+        } else {
+            $session->update($creteria);
         }
 
         return redirect()->back()->with('success', 'Cập nhật thành công');
