@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\Config\ConfigController;
+use App\Http\Controllers\Backend\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ use App\Http\Controllers\Backend\Config\ConfigController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+route::post('contact', [HomeController::class, 'contact'])->name('contact');
 
 
 route::prefix('admin')->name('admin.')->group(function () {
@@ -42,9 +44,10 @@ route::prefix('admin')->name('admin.')->group(function () {
             route::delete('session/{id}', 'destroy')->name('destroy');
 
             route::delete('session/{id}/image', 'deleteImage')->name('image.destroy');
-
-         
         });
+
+
+        route::get('contact', [ContactController::class, 'index'])->name('contact.index');
     });
 
     route::middleware('guest')->group(function () {

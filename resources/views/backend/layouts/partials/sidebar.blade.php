@@ -102,6 +102,11 @@
                                     </ul>
                                 </div>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{route('admin.contact.index')}}" class="nav-link"
+                                    data-key="t-website">Thông tin liên hệ</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

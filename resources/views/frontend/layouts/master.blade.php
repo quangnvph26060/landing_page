@@ -4,10 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fixed Header Example</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>{{ $config->title ?? $config->title_seo }}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/swiper/swiper-bundle.min.css') }}" />
+
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/sweetalert2/sweetalert2.min.css') }}">
+
+    {{-- meta description --}}
+    <meta name="description" content="{{ $config->description_seo ?? $config->title_seo }}" />
+    <meta name="keywords" content="{{ $config->keywords_seo ?? $config->title_seo }}" />
 
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ showImage($config->favicon) }}" />
@@ -46,11 +53,11 @@
 
     <!-- Form -->
     <div class="register-form">
-        <h3>ĐĂNG KÍ SĐT NHẬN NGAY ƯU ĐÃI</h3>
-        <form action="/submit-form" method="post">
-            <input type="text" name="name" placeholder="Họ và Tên" required />
-            <input type="tel" name="phone" placeholder="Số điện thoại" required />
-            <button type="submit">NHẬN ƯU ĐÃI</button>
+        <h3>ĐĂNG KÍ SĐT ĐỂ NHẬN TƯ VẤN</h3>
+        <form action="{{ route('contact') }}" method="post" class="contact-form">
+            <input type="text" name="name" required placeholder="Họ và Tên" />
+            <input type="tel" name="phone" required placeholder="Số điện thoại" />
+            <button type="submit">ĐĂNG KÝ NGAY</button>
         </form>
     </div>
     <!-- Form -->
@@ -209,15 +216,16 @@
                 </div>
             </div>
 
-            <form action="" method="post">
+            <form action="{{ route('contact') }}" method="post" class="contact-form">
                 <div class="form-contact d-flex mt-3 justify-content-between px-2">
-                    <input type="text"
+                    <input type="text" required
                         style="
                 padding: 15px 60px 15px 5px;
                 border: 3px solid #040b7a;
                 border-radius: 10px;
               "
-                        placeholder="Số điện thoại" />
+                        name="phone" placeholder="Số điện thoại" />
+                        <input type="hidden" name="note" value="{{ $s5->title }}">
                     <button
                         style="
                 padding: 15px 10px;
@@ -338,13 +346,11 @@
     <div class="text-center mt-3">
         <h3 class="fw-bold" style="color: #e47d04">{{ $data['session_10']->title }}</h3>
         <p class="fw-bold" style="color: #74267b">
-          {{ $data['session_10']->content }}
+            {{ $data['session_10']->content }}
         </p>
 
         <div class="px-3 py-2" style="background-color: #e0cdf4">
-            <img class="img-fluid"
-                src="{{ showImage($data['session_10']->image) }}"
-                alt="" />
+            <img class="img-fluid" src="{{ showImage($data['session_10']->image) }}" alt="" />
         </div>
     </div>
 
@@ -354,13 +360,13 @@
                 Để lại số điện thoại để phòng khám tư vấn ngay
             </h3>
 
-            <form action="" method="post">
+            <form action="{{ route('contact') }}" method="post" class="contact-form">
                 <div class="form-group mb-3">
-                    <input type="text" placeholder="Họ và tên" class="form-control" />
+                    <input type="text" name="name" placeholder="Họ và tên" required class="form-control" />
                 </div>
                 <div class="form-group mb-3">
-                    <input type="text" placeholder="Số điện thoại" class="form-control" pattern="[0-9]{10}"
-                        title="Please enter a valid 10-digit phone number" required />
+                    <input type="text" name="phone" placeholder="Số điện thoại" class="form-control"
+                        pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required />
                 </div>
 
                 <div class="text-center">
@@ -433,8 +439,10 @@
         <h2>TƯ VẤN SẢN PHẨM NGAY</h2>
         <div style="border: 1px solid #ffffff" class="w-100 mx-auto my-1" style="margin-top: 10px"></div>
         <div class="button-container">
-            <input type="text" class="phone-input" placeholder="Số điện thoại" />
-            <button class="quote-button">BÁO GIÁ ƯU ĐÃI</button>
+            <form action="{{ route('contact') }}" method="post" class="contact-form">
+                <input type="text" class="phone-input" name="phone" required pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" placeholder="Số điện thoại" />
+                <button type="submit" class="quote-button">BÁO GIÁ ƯU ĐÃI</button>
+            </form>
         </div>
     </div>
 
@@ -453,9 +461,13 @@
     <div class="scroll-top" onclick="scrollToTop()">▲</div>
 
     <!-- Bootstrap JS (Optional) -->
+    <script src="{{ asset('backend/assets/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/all.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/dist/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+
+
 
     <script>
         const swiper = new Swiper(".swiper-container", {
@@ -487,6 +499,43 @@
                 behavior: "smooth",
             });
         }
+
+        $(document).on('submit', '.contact-form', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'post',
+                data: $(this).serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        $('input[name="name"]').val('');
+                        $('input[name="phone"]').val('');
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                }
+            })
+        })
     </script>
 </body>
 
