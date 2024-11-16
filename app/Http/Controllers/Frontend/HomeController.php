@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\{
+    Contact,
     Session_2,
     Session_3,
     Session_4,
@@ -15,6 +16,8 @@ use App\Models\{
     Session_8,
     Session_9
 };
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -35,5 +38,52 @@ class HomeController extends Controller
 
 
         return view('frontend.layouts.master', compact('data'));
+    }
+
+    public function contact(Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'nullable',
+                'phone' => ['required', 'regex:/^0[0-9]{9}$/'],
+                'note' => 'nullable',
+
+            ],
+            __('request.messages'),
+            [
+                'phone' => 'Số điện thoại',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+         // Kiểm tra nếu số điện thoại đã gửi liên hệ trong vòng 5 phút trước
+        $recentContact = Contact::where('phone', $validator->validated()['phone'])
+            ->where('created_at', '>=', Carbon::now()->subMinutes(5))
+            ->first();
+
+        if ($recentContact) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Bạn đã gửi liên hệ trong vòng 5 phút trước. Vui lòng chờ thêm.',
+            ]);
+        }
+
+        Contact::updateOrCreate(
+            ['phone' => $validator->validated()['phone']],
+            [
+                'name' => $validator->validated()['name'] ?? null,
+                'note' => $validator->validated()['note'] ?? null,
+                'created_at' => Carbon::now(),
+            ]
+        );
+
+
+        return response()->json(['status' => true, 'message' => 'Đăng ký thành công.']);
     }
 }
