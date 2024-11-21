@@ -343,7 +343,7 @@
         </div>
     </div>
 
-    <div class="text-center mt-3">
+    {{-- <div class="text-center mt-3">
         <h3 class="fw-bold" style="color: #e47d04">{{ $data['session_10']->title }}</h3>
         <p class="fw-bold" style="color: #74267b">
             {{ $data['session_10']->content }}
@@ -352,7 +352,7 @@
         <div class="px-3 py-2" style="background-color: #e0cdf4">
             <img class="img-fluid" src="{{ showImage($data['session_10']->image) }}" alt="" />
         </div>
-    </div>
+    </div> --}}
 
     <div style="background-color: #f4f3fd" class="">
         <div class="form-footer m-2 p-3" style="background-color: #540778">
