@@ -403,7 +403,7 @@ class ConfigController extends Controller
         }
 
         DB::beginTransaction();
-        $image = saveImages($request, 'file', 'sliders', 664, 911);
+        $image = saveImage($request, 'file', 'sliders');
         try {
             if ($request->hasFile('file')) {
                 if ($image) {
