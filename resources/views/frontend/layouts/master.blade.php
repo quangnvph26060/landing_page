@@ -191,7 +191,7 @@
             ">
                 <div class="d-flex pt-4">
                     <div class="image" style="width: 100%;">
-                        <img style="width: 100%; height: auto" src="{{ asset('frontend/assets/image/vay-nen.jpg') }}" alt="" />
+                        <img style="width: 100%; height: auto" src="{{ showImage($s5->image) }}" alt="" />
                     </div>
                 </div>
             </div>
