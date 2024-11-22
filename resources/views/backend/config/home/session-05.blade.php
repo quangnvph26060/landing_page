@@ -76,11 +76,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="title" class="form-label">Tên loại bệnh</label>
-                            <input type="text" name="title" class="form-control" id="title" required>
+                            <input type="text" name="title" class="form-control" id="title" >
                         </div>
                         <div class="mb-3">
                             <label for="contents" class="form-label">Biểu hiện</label>
-                            <input type="text" name="contents" class="form-control" id="contents" required>
+                            <input type="text" name="contents" class="form-control" id="contents" >
                             <small class="form-text text-danger">Vui lòng nhập các biểu hiện cách nhau bằng dấu phẩy
                                 ("|").</small>
                         </div>

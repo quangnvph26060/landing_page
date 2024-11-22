@@ -188,35 +188,15 @@
             <div
                 style="
           border-radius: 27px;
-          background-image: linear-gradient(
-            rgba(21, 110, 213, 0.9),
-            rgb(148, 26, 158)
-          );
             ">
-                <div class="d-flex py-4 mt-3">
-                    <div class="image" style="width: 55%; padding: 0 5px 0 10px">
-                        <img style="width: 100%; height: auto" src="{{ showImage($s5->image) }}" alt="" />
-                    </div>
-                    <div class="content">
-                        <div class="title">
-                            <p class="fw-bold fs-4 pb-1" style="color: #fefe01; border-bottom: 3px solid #ffffff">
-                                {{ $s5->title }}
-                            </p>
-                        </div>
-                        <div class="text-white" style="font-weight: 400">
-                            @php
-                                $arr = explode('| ', $s5->contents);
-                            @endphp
-
-                            @foreach ($arr as $i5)
-                                <p class="">{{ $i5 }} </p>
-                            @endforeach
-                        </div>
+                <div class="d-flex pt-4">
+                    <div class="image" style="width: 100%;">
+                        <img style="width: 100%; height: auto" src="{{ asset('frontend/assets/image/vay-nen.jpg') }}" alt="" />
                     </div>
                 </div>
             </div>
 
-            <form action="{{ route('contact') }}" method="post" class="contact-form">
+            <form action="{{ route('contact') }}" method="post" class="contact-form mb-3">
                 <div class="form-contact d-flex mt-3 justify-content-between px-2">
                     <input type="text" required
                         style="
@@ -225,7 +205,7 @@
                 border-radius: 10px;
               "
                         name="phone" placeholder="Số điện thoại" />
-                        <input type="hidden" name="note" value="{{ $s5->title }}">
+                        <input type="hidden" name="note" value="{{ $s5->title ?? '' }}">
                     <button
                         style="
                 padding: 15px 10px;

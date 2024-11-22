@@ -289,8 +289,8 @@ class ConfigController extends Controller
     {
         $criteria = $request->validate(
             [
-                'title' => 'required',
-                'contents' => 'required',
+                'title' => 'nullable',
+                'contents' => 'nullable',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ],
             __('request.messages'),
@@ -302,7 +302,7 @@ class ConfigController extends Controller
         );
 
         if ($request->hasFile('image')) {
-            $criteria['image'] = saveImage($request, 'image', 'image');
+            $criteria['image'] = saveImages($request, 'image', 'image', 700, 800);
         }
 
 
