@@ -384,7 +384,7 @@
             <div class="website d-flex gap-2 align-items-center mb-4">
                 <i class="fa-solid fa-globe fa-2xl me-2" style="color: #ffffff"></i>
                 <p class="fw-bold m-0 text-white">
-                    Website: <a target="_blank" href="{{ $config->website }}">{{ $config->website }}</a>
+                    Website: <a target="_blank" href="{{ url('/') }}">{{ url('/') }}</a>
                 </p>
             </div>
         </div>
